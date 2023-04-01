@@ -5,6 +5,7 @@ project(cobweb
   VERSION 0.1.0
   DESCRIPTION "A header-only constant time timer queue."
 )
+set(CMAKE_CXX_FLAGS_DEBUG "-g3" CACHE STRING "" FORCE)
 
 add_library(cobweb INTERFACE)
 target_include_directories(cobweb INTERFACE
