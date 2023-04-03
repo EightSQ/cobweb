@@ -15,8 +15,8 @@ target_compile_features(cobweb INTERFACE
   cxx_std_20
 )
 
-add_executable(app src/app.cpp)
-target_link_libraries(app PRIVATE
+add_executable(cobweb_demo_app src/app.cpp)
+target_link_libraries(cobweb_demo_app PRIVATE
   cobweb
 )
 
