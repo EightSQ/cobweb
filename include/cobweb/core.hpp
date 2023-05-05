@@ -4,6 +4,7 @@
 #include <array>
 #include <cassert>
 #include <cstdint>
+#include <limits>
 #include <optional>
 #include <queue>
 #include <utility>
