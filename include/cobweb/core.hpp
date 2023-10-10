@@ -14,8 +14,8 @@ namespace cw {
 using Tick_t = uint64_t;
 constexpr Tick_t MAX_TICK = std::numeric_limits<Tick_t>::max();
 
-/// TimerQueue with k possible TTLs (1, 2, 4, ..., 2^(k-1)).
-template <typename T, int k> class TimerQueue {
+/// Timer queue with k possible TTLs (1, 2, 4, ..., 2^(k-1)).
+template <typename T, int k> class MSBCompressionTimerQueue {
   using QueueElement_t = std::pair<Tick_t, T>;
 
 public:
@@ -69,6 +69,9 @@ public:
     return deadline;
   }
 
+protected:
+  Tick_t current_tick_{0};
+
 private:
   /// Find smallest deadline among front elements.
   std::pair<Tick_t, int> find_next_due_queue() const {
@@ -84,8 +87,11 @@ private:
   }
 
   std::array<std::queue<QueueElement_t>, k> queues_{};
-  Tick_t current_tick_{0};
   uint64_t num_timers_scheduled_{0};
 };
+
+// For legacy reasons
+template <typename T, int k>
+using TimerQueue = MSBCompressionTimerQueue<T, k>;
 
 } // namespace cw

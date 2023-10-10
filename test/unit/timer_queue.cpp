@@ -3,7 +3,8 @@
 #include <utility>
 #include <vector>
 
-#include "cobweb/cobweb.hpp"
+#include "cobweb/core.hpp"
+#include "cobweb/advanced.hpp"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
@@ -97,6 +98,18 @@ TEST_F(TimerQueueTest, TTLPruning) {
   EXPECT_EQ(tq.poll(7), std::nullopt);
   EXPECT_THAT(tq.poll(8), Optional(1337));
   EXPECT_EQ(tq.poll(10), std::nullopt);
+  EXPECT_TRUE(tq.empty());
+}
+
+TEST_F(TimerQueueTest, BitCompressionTTLPruning) {
+  BitCompressionTimerQueue<uint64_t, 16, 2> tq;
+  tq.insert(1337, 11, 0);
+
+  EXPECT_EQ(tq.next_timeout(), 8);
+
+  EXPECT_EQ(tq.poll(7), std::nullopt);
+  EXPECT_EQ(tq.poll(8), std::nullopt);
+  EXPECT_THAT(tq.poll(10), Optional(1337));
   EXPECT_TRUE(tq.empty());
 }
 
