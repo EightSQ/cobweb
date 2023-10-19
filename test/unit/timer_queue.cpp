@@ -102,7 +102,7 @@ TEST_F(TimerQueueTest, TTLPruning) {
 }
 
 TEST_F(TimerQueueTest, BitCompressionTTLPruning) {
-  BitCompressionTimerQueue<uint64_t, 16, 2> tq;
+  BitCompressionTimerQueue<uint64_t, 16> tq{2};
   tq.insert(1337, 11, 0);
 
   EXPECT_EQ(tq.next_timeout(), 8);

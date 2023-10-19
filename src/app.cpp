@@ -5,7 +5,7 @@
 namespace {
 
 void advanced() {
-  cw::BitCompressionTimerQueue<uint64_t, 4, 2> tq;
+  cw::BitCompressionTimerQueue<uint64_t, 4> tq{2};
   tq.insert(1337, 2);
   tq.insert(1337, 4);
 

@@ -6,18 +6,20 @@ namespace {}
 
 namespace cw {
 
-template <typename T, int k, int8_t NumMaxBits>
+template <typename T, int k>
 class BitCompressionTimerQueue : public MSBCompressionTimerQueue<std::tuple<Tick_t, int8_t, T>, k> {
   using ElementT =
       std::tuple<Tick_t, int8_t, T>;  // end time, bits_left, value
   using BaseTQ = MSBCompressionTimerQueue<ElementT, k>;
 
  public:
+  explicit BitCompressionTimerQueue(int8_t num_max_bits) : num_max_bits_{num_max_bits} {}
+
   void insert(T value, Tick_t ttl) {
     this->insert(value, ttl, this->current_tick_);
   }
   void insert(T value, Tick_t ttl, Tick_t now) {
-    BaseTQ::insert({now + ttl, NumMaxBits - 1, value}, ttl, now);
+    BaseTQ::insert({now + ttl, num_max_bits_ - 1, value}, ttl, now);
   }
 
   std::optional<T> poll() { return this->poll(this->current_tick_); }
@@ -34,6 +36,8 @@ class BitCompressionTimerQueue : public MSBCompressionTimerQueue<std::tuple<Tick
     }
     return std::optional<T>();
   }
+ private:
+  const int8_t num_max_bits_;
 };
 
 }  // namespace cw
